@@ -1,0 +1,25 @@
+-- [Q09] 집계 | 카테고리별 상품 수, 평균 가격, 총 재고를 구한다 (COUNT + AVG + SUM + GROUP BY)
+
+SELECT c.name                   AS category,
+       COUNT(p.product_id)      AS product_count,
+       ROUND(AVG(p.price), 0)   AS avg_price,
+       SUM(p.stock)             AS total_stock
+FROM category c
+INNER JOIN product p ON p.category_id = c.category_id
+GROUP BY c.category_id, c.name
+ORDER BY avg_price DESC;
+
+-- 실행 결과 --------------------------------
+ category | product_count | avg_price | total_stock 
+----------+---------------+-----------+-------------
+ 전자기기 |             4 |    399250 |         245
+ 가구     |             1 |    279000 |          10
+ 생활용품 |             2 |    187000 |         120
+ 신발     |             2 |    114000 |          65
+ 스포츠   |             2 |     99000 |         105
+ 패션의류 |             2 |     54000 |         150
+ 도서     |             2 |     28500 |         350
+ 반려동물 |             1 |     27000 |          60
+ 뷰티     |             2 |     26500 |         200
+ 식품     |             2 |     17400 |         480
+(10 rows)

@@ -1,0 +1,14 @@
+-- [Q07] 조인 | 한 번도 주문하지 않은 회원을 찾는다 (LEFT JOIN + IS NULL)
+
+SELECT m.member_id, m.name, m.city, m.created_at
+FROM member m
+LEFT JOIN orders o ON o.member_id = m.member_id
+WHERE o.order_id IS NULL
+ORDER BY m.member_id;
+
+-- 실행 결과 --------------------------------
+ member_id |  name  | city | created_at 
+-----------+--------+------+------------
+        11 | 오태양 | 수원 | 2026-10-15
+        12 | 신하나 | 서울 | 2026-11-01
+(2 rows)

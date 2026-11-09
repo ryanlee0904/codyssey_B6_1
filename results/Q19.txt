@@ -1,0 +1,8 @@
+-- [Q19] 제약조건 검증 | 존재하지 않는 회원(999번)으로 주문을 넣으면 FK 가 막는지 확인한다 (오류가 나야 정상)
+
+INSERT INTO orders (order_id, member_id, status, total_amount, ordered_at)
+VALUES (100, 999, 'PAID', 10000, TIMESTAMP '2026-11-09 10:00:00');
+
+-- 실행 결과 --------------------------------
+ERROR:  insert or update on table "orders" violates foreign key constraint "fk_orders_member"
+DETAIL:  Key (member_id)=(999) is not present in table "member".

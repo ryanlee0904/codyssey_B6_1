@@ -1,0 +1,27 @@
+-- [Q06] 조인 | 회원 '김민수'가 산 모든 상품을 주문·상품·카테고리 정보와 함께 조회한다 (INNER JOIN 5개 테이블)
+
+SELECT o.order_id,
+       CAST(o.ordered_at AS DATE)    AS order_date,
+       c.name                        AS category,
+       p.name                        AS product,
+       oi.quantity,
+       oi.unit_price,
+       oi.quantity * oi.unit_price   AS line_total
+FROM member m
+INNER JOIN orders o      ON o.member_id   = m.member_id
+INNER JOIN order_item oi ON oi.order_id   = o.order_id
+INNER JOIN product p     ON p.product_id  = oi.product_id
+INNER JOIN category c    ON c.category_id = p.category_id
+WHERE m.name = '김민수'
+ORDER BY o.ordered_at, oi.order_item_id;
+
+-- 실행 결과 --------------------------------
+ order_id | order_date | category |     product      | quantity | unit_price | line_total 
+----------+------------+----------+------------------+----------+------------+------------
+        1 | 2026-09-03 | 전자기기 | 무선 이어폰 프로 |        1 |     189000 |     189000
+        1 | 2026-09-03 | 전자기기 | 무선 마우스      |        1 |      29000 |      29000
+        4 | 2026-09-28 | 신발     | 러닝화 에어      |        1 |     129000 |     129000
+        4 | 2026-09-28 | 스포츠   | 요가 매트        |        1 |      39000 |      39000
+       14 | 2026-11-06 | 식품     | 콜드브루 원액    |        4 |      15900 |      63600
+       14 | 2026-11-06 | 식품     | 유기농 견과 믹스 |        2 |      18900 |      37800
+(6 rows)

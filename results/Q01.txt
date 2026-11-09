@@ -1,0 +1,16 @@
+-- [Q01] 기본 조회 | 서울에 사는 회원을 가입일이 빠른 순서로 조회한다 (WHERE + ORDER BY)
+
+SELECT member_id, name, email, grade, created_at
+FROM member
+WHERE city = '서울'
+ORDER BY created_at ASC;
+
+-- 실행 결과 --------------------------------
+ member_id |  name  |        email        | grade  | created_at 
+-----------+--------+---------------------+--------+------------
+         2 | 이지영 | lee.jiyoung@shop.kr | VIP    | 2024-11-02
+         6 | 강유나 | kang.yuna@shop.kr   | GOLD   | 2025-02-27
+         1 | 김민수 | kim.minsu@shop.kr   | GOLD   | 2025-03-12
+        10 | 송미나 | song.mina@shop.kr   | BRONZE | 2026-09-30
+        12 | 신하나 | shin.hana@shop.kr   | BRONZE | 2026-11-01
+(5 rows)

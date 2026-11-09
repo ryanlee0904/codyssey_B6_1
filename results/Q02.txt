@@ -1,0 +1,17 @@
+-- [Q02] 기본 조회 | 가격이 가장 비싼 상품 5개를 조회한다 (ORDER BY DESC + LIMIT)
+
+-- [PostgreSQL 전용] LIMIT 은 PostgreSQL/MySQL 문법. 표준 SQL 로는 FETCH FIRST 5 ROWS ONLY
+SELECT product_id, name, price, stock
+FROM product
+ORDER BY price DESC
+LIMIT 5;
+
+-- 실행 결과 --------------------------------
+ product_id |       name       |  price  | stock 
+------------+------------------+---------+-------
+          2 | 노트북 14인치    | 1290000 |    15
+         16 | 무선 청소기      |  349000 |    20
+         19 | 원목 책상        |  279000 |    10
+          1 | 무선 이어폰 프로 |  189000 |    50
+         18 | 접이식 덤벨 세트 |  159000 |    30
+(5 rows)

@@ -1,0 +1,17 @@
+-- [Q13] 서브쿼리 | 전체 상품 평균 가격보다 비싼 상품을 조회한다 (WHERE 절 스칼라 서브쿼리)
+
+SELECT product_id, name, price,
+       (SELECT ROUND(AVG(price), 0) FROM product) AS overall_avg_price
+FROM product
+WHERE price > (SELECT AVG(price) FROM product)
+ORDER BY price DESC;
+
+-- 실행 결과 --------------------------------
+ product_id |       name       |  price  | overall_avg_price 
+------------+------------------+---------+-------------------
+          2 | 노트북 14인치    | 1290000 |            147790
+         16 | 무선 청소기      |  349000 |            147790
+         19 | 원목 책상        |  279000 |            147790
+          1 | 무선 이어폰 프로 |  189000 |            147790
+         18 | 접이식 덤벨 세트 |  159000 |            147790
+(5 rows)

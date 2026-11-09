@@ -1,0 +1,9 @@
+ table_name | row_count 
+------------+-----------
+ member     |        12
+ category   |        10
+ product    |        20
+ orders     |        15
+ order_item |        27
+ review     |        17
+(6 rows)

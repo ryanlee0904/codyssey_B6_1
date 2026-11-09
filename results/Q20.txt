@@ -1,0 +1,13 @@
+-- [Q20] 제약조건 검증 | 이미 있는 이메일(UNIQUE)과 이름 누락(NOT NULL)으로 회원을 넣으면 거부되는지 확인한다 (오류가 나야 정상)
+
+INSERT INTO member (member_id, email, name, phone, city, grade, created_at)
+VALUES (13, 'kim.minsu@shop.kr', '김중복', '010-9999-0013', '서울', 'BRONZE', DATE '2026-11-09');
+
+INSERT INTO member (member_id, email, name, phone, city, grade, created_at)
+VALUES (14, 'no.name@shop.kr', NULL, '010-9999-0014', '서울', 'BRONZE', DATE '2026-11-09');
+
+-- 실행 결과 --------------------------------
+ERROR:  duplicate key value violates unique constraint "member_email_key"
+DETAIL:  Key (email)=(kim.minsu@shop.kr) already exists.
+ERROR:  null value in column "name" of relation "member" violates not-null constraint
+DETAIL:  Failing row contains (14, no.name@shop.kr, null, 010-9999-0014, 서울, BRONZE, 2026-11-09).

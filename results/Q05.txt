@@ -1,0 +1,26 @@
+-- [Q05] 조인 | 주문 목록에 주문한 회원의 이름과 등급을 붙여서 최신 주문순으로 보여준다 (INNER JOIN 2개 테이블)
+
+SELECT o.order_id, m.name AS member_name, m.grade, o.status, o.total_amount, o.ordered_at
+FROM orders o
+INNER JOIN member m ON m.member_id = o.member_id
+ORDER BY o.ordered_at DESC;
+
+-- 실행 결과 --------------------------------
+ order_id | member_name | grade  |  status   | total_amount |     ordered_at      
+----------+-------------+--------+-----------+--------------+---------------------
+       15 | 강유나      | GOLD   | CANCELLED |        99000 | 2026-11-07 17:55:00
+       14 | 김민수      | GOLD   | PAID      |       101400 | 2026-11-06 09:20:00
+       13 | 송미나      | BRONZE | DELIVERED |        78000 | 2026-11-04 15:40:00
+       12 | 임도현      | BRONZE | DELIVERED |       216000 | 2026-11-02 12:15:00
+       11 | 박준호      | SILVER | PAID      |       329000 | 2026-11-01 10:00:00
+       10 | 한아라      | SILVER | SHIPPING  |       159000 | 2026-10-27 21:05:00
+        9 | 윤서준      | BRONZE | DELIVERED |        88500 | 2026-10-22 19:10:00
+        8 | 이지영      | VIP    | SHIPPING  |       118000 | 2026-10-19 08:30:00
+        7 | 강유나      | GOLD   | DELIVERED |       157000 | 2026-10-11 13:45:00
+        6 | 정현우      | BRONZE | CANCELLED |       349000 | 2026-10-05 16:20:00
+        5 | 최소라      | SILVER | DELIVERED |       127000 | 2026-10-02 11:00:00
+        4 | 김민수      | GOLD   | DELIVERED |       168000 | 2026-09-28 20:41:00
+        3 | 박준호      | SILVER | DELIVERED |        79000 | 2026-09-15 09:05:00
+        2 | 이지영      | VIP    | DELIVERED |      1290000 | 2026-09-07 14:30:00
+        1 | 김민수      | GOLD   | DELIVERED |       218000 | 2026-09-03 10:12:00
+(15 rows)

@@ -1,0 +1,12 @@
+# Python 가상환경 / 캐시
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# PyCharm 설정 (실행 구성에 비밀번호가 들어 있을 수 있음)
+.idea/
+
+# OS 파일
+.DS_Store
+Thumbs.db

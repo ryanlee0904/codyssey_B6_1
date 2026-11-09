@@ -1,0 +1,18 @@
+-- [Q04] 기본 조회 | 2026년 10월 주문 중 취소되지 않은 주문을 금액이 큰 순으로 조회한다 (범위 조건 + 복합 WHERE)
+
+SELECT order_id, member_id, status, total_amount, ordered_at
+FROM orders
+WHERE ordered_at >= TIMESTAMP '2026-10-01 00:00:00'
+  AND ordered_at <  TIMESTAMP '2026-11-01 00:00:00'
+  AND status <> 'CANCELLED'
+ORDER BY total_amount DESC;
+
+-- 실행 결과 --------------------------------
+ order_id | member_id |  status   | total_amount |     ordered_at      
+----------+-----------+-----------+--------------+---------------------
+       10 |         8 | SHIPPING  |       159000 | 2026-10-27 21:05:00
+        7 |         6 | DELIVERED |       157000 | 2026-10-11 13:45:00
+        5 |         4 | DELIVERED |       127000 | 2026-10-02 11:00:00
+        8 |         2 | SHIPPING  |       118000 | 2026-10-19 08:30:00
+        9 |         7 | DELIVERED |        88500 | 2026-10-22 19:10:00
+(5 rows)

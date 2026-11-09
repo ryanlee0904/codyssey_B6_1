@@ -1,0 +1,85 @@
+// 전자상거래 DB ERD (Graphviz)  -  렌더링: dot -Tpng -Gdpi=130 -Nfontname="Noto Sans CJK KR" -Efontname="Noto Sans CJK KR" -Gfontname="Noto Sans CJK KR" erd.dot -o erd.png
+digraph ERD {
+  graph [rankdir=LR, splines=spline, nodesep=0.8, ranksep=1.6, bgcolor="white",
+         fontname="Helvetica", fontsize=20, labelloc=t,
+         label=<<B>codyssey_shop  ERD</B>   <FONT POINT-SIZE="13" COLOR="#666666">PK = 기본키, FK = 외래키, UQ = UNIQUE, NN = NOT NULL</FONT>>];
+  node  [shape=plain, fontname="Helvetica", fontsize=12];
+  edge  [fontname="Helvetica", fontsize=11, color="#555555", arrowsize=0.9];
+
+  member [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#2f6fb0">
+      <TR><TD BGCOLOR="#2f6fb0" COLSPAN="3"><FONT COLOR="white"><B>member</B>  회원</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>member_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">email</TD><TD ALIGN="LEFT">VARCHAR(100)</TD><TD ALIGN="LEFT">NN, UQ</TD></TR>
+      <TR><TD ALIGN="LEFT">name</TD><TD ALIGN="LEFT">VARCHAR(50)</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT">phone</TD><TD ALIGN="LEFT">VARCHAR(20)</TD><TD ALIGN="LEFT">UQ</TD></TR>
+      <TR><TD ALIGN="LEFT">city</TD><TD ALIGN="LEFT">VARCHAR(30)</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT">grade</TD><TD ALIGN="LEFT">VARCHAR(10)</TD><TD ALIGN="LEFT">NN, CHECK</TD></TR>
+      <TR><TD ALIGN="LEFT">created_at</TD><TD ALIGN="LEFT">DATE</TD><TD ALIGN="LEFT">NN</TD></TR>
+    </TABLE>>];
+
+  category [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#2f6fb0">
+      <TR><TD BGCOLOR="#2f6fb0" COLSPAN="3"><FONT COLOR="white"><B>category</B>  카테고리</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>category_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">name</TD><TD ALIGN="LEFT">VARCHAR(50)</TD><TD ALIGN="LEFT">NN, UQ</TD></TR>
+      <TR><TD ALIGN="LEFT">description</TD><TD ALIGN="LEFT">VARCHAR(200)</TD><TD ALIGN="LEFT"></TD></TR>
+    </TABLE>>];
+
+  product [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#2f6fb0">
+      <TR><TD BGCOLOR="#2f6fb0" COLSPAN="3"><FONT COLOR="white"><B>product</B>  상품</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>product_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="category_id">category_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN</TD></TR>
+      <TR><TD ALIGN="LEFT">name</TD><TD ALIGN="LEFT">VARCHAR(100)</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT">price</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN, CHECK &gt; 0</TD></TR>
+      <TR><TD ALIGN="LEFT">stock</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN, CHECK &gt;= 0</TD></TR>
+      <TR><TD ALIGN="LEFT">created_at</TD><TD ALIGN="LEFT">DATE</TD><TD ALIGN="LEFT">NN</TD></TR>
+    </TABLE>>];
+
+  orders [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#c0702a">
+      <TR><TD BGCOLOR="#c0702a" COLSPAN="3"><FONT COLOR="white"><B>orders</B>  주문</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>order_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="member_id">member_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN, INDEX</TD></TR>
+      <TR><TD ALIGN="LEFT">status</TD><TD ALIGN="LEFT">VARCHAR(20)</TD><TD ALIGN="LEFT">NN, CHECK</TD></TR>
+      <TR><TD ALIGN="LEFT">total_amount</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT">ordered_at</TD><TD ALIGN="LEFT">TIMESTAMP</TD><TD ALIGN="LEFT">NN</TD></TR>
+    </TABLE>>];
+
+  order_item [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#c0702a">
+      <TR><TD BGCOLOR="#c0702a" COLSPAN="3"><FONT COLOR="white"><B>order_item</B>  주문 상세</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>order_item_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="order_id">order_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN (CASCADE)</TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="product_id">product_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN</TD></TR>
+      <TR><TD ALIGN="LEFT">quantity</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN, CHECK &gt; 0</TD></TR>
+      <TR><TD ALIGN="LEFT">unit_price</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT" COLSPAN="3"><FONT POINT-SIZE="10" COLOR="#666666">UQ (order_id, product_id)</FONT></TD></TR>
+    </TABLE>>];
+
+  review [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#7a4fb0">
+      <TR><TD BGCOLOR="#7a4fb0" COLSPAN="3"><FONT COLOR="white"><B>review</B>  리뷰</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>review_id</B></TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT" PORT="pk"><FONT COLOR="#b03030">PK</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="member_id">member_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN</TD></TR>
+      <TR><TD ALIGN="LEFT" PORT="product_id">product_id</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT"><FONT COLOR="#2f8a3a">FK</FONT>, NN</TD></TR>
+      <TR><TD ALIGN="LEFT">rating</TD><TD ALIGN="LEFT">INTEGER</TD><TD ALIGN="LEFT">NN, CHECK 1~5</TD></TR>
+      <TR><TD ALIGN="LEFT">content</TD><TD ALIGN="LEFT">VARCHAR(500)</TD><TD ALIGN="LEFT"></TD></TR>
+      <TR><TD ALIGN="LEFT">created_at</TD><TD ALIGN="LEFT">DATE</TD><TD ALIGN="LEFT">NN</TD></TR>
+      <TR><TD ALIGN="LEFT" COLSPAN="3"><FONT POINT-SIZE="10" COLOR="#666666">UQ (member_id, product_id)</FONT></TD></TR>
+    </TABLE>>];
+
+  { rank=same; member; category; }
+  { rank=same; orders; product; }
+  { rank=same; order_item; review; }
+  orders -> product [style=invis];
+
+  // 1 : N 관계  (부모 -> 자식, 부모 쪽 1, 자식 쪽 N)
+  member:pk:e   -> orders:member_id:w       [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+  category:pk:e -> product:category_id:w    [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+  orders:pk:e   -> order_item:order_id:w    [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+  product:pk:e  -> order_item:product_id:w  [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+  member:pk:e   -> review:member_id:w       [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+  product:pk:e  -> review:product_id:w      [arrowhead=crow, arrowtail=tee, dir=both, label="1 : N", fontcolor="#333333"];
+}

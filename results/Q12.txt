@@ -1,0 +1,29 @@
+-- [Q12] 집계 | 상품별 판매 수량과 매출로 판매 랭킹을 매긴다 (SUM + GROUP BY + RANK 윈도 함수)
+
+-- RANK() OVER 는 SQL:2003 표준 윈도 함수 (PostgreSQL/MySQL 8/Oracle 공통 지원)
+SELECT RANK() OVER (ORDER BY SUM(oi.quantity) DESC)  AS sales_rank,
+       p.name                                        AS product,
+       SUM(oi.quantity)                              AS sold_qty,
+       SUM(oi.quantity * oi.unit_price)              AS sales_amount
+FROM order_item oi
+INNER JOIN orders o  ON o.order_id   = oi.order_id
+INNER JOIN product p ON p.product_id = oi.product_id
+WHERE o.status <> 'CANCELLED'
+GROUP BY p.product_id, p.name
+ORDER BY sales_rank, sales_amount DESC
+LIMIT 10;  -- [PostgreSQL 전용] LIMIT (표준: FETCH FIRST 10 ROWS ONLY)
+
+-- 실행 결과 --------------------------------
+ sales_rank |      product       | sold_qty | sales_amount 
+------------+--------------------+----------+--------------
+          1 | 콜드브루 원액      |        6 |        95400
+          2 | 유기농 견과 믹스   |        5 |        94500
+          3 | 선크림 SPF50       |        4 |        84000
+          4 | SQL 첫걸음         |        3 |        66000
+          5 | 무선 이어폰 프로   |        2 |       378000
+          5 | 오버핏 후드티      |        2 |        98000
+          5 | 파이썬 완벽 가이드 |        2 |        70000
+          5 | 수분 크림          |        2 |        64000
+          5 | 무선 마우스        |        2 |        58000
+          5 | 대용량 텀블러      |        2 |        50000
+(10 rows)

@@ -1,0 +1,24 @@
+-- [Q17] 삭제 | 취소된 주문을 삭제하고, ON DELETE CASCADE 로 주문 상세도 함께 지워지는지 확인한다 (DELETE)
+
+SELECT 'before' AS step,
+       (SELECT COUNT(*) FROM orders)     AS orders_cnt,
+       (SELECT COUNT(*) FROM order_item) AS order_item_cnt;
+
+DELETE FROM orders
+WHERE status = 'CANCELLED';
+
+SELECT 'after' AS step,
+       (SELECT COUNT(*) FROM orders)     AS orders_cnt,
+       (SELECT COUNT(*) FROM order_item) AS order_item_cnt;
+
+-- 실행 결과 --------------------------------
+  step  | orders_cnt | order_item_cnt 
+--------+------------+----------------
+ before |         15 |             27
+(1 row)
+
+DELETE 2
+ step  | orders_cnt | order_item_cnt 
+-------+------------+----------------
+ after |         13 |             25
+(1 row)

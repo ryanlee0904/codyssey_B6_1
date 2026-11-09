@@ -1,0 +1,14 @@
+-- [Q03] 기본 조회 | 상품명에 '무선'이 들어간 상품을 검색해 저렴한 순으로 보여준다 (LIKE 검색)
+
+SELECT product_id, name, price
+FROM product
+WHERE name LIKE '%무선%'
+ORDER BY price ASC;
+
+-- 실행 결과 --------------------------------
+ product_id |       name       | price  
+------------+------------------+--------
+          3 | 무선 마우스      |  29000
+          1 | 무선 이어폰 프로 | 189000
+         16 | 무선 청소기      | 349000
+(3 rows)

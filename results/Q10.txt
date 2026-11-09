@@ -1,0 +1,21 @@
+-- [Q10] 집계 | 취소 주문을 뺀 회원별 총 구매액을 구하고 20만 원 이상인 우수 회원만 보여준다 (SUM + GROUP BY + HAVING)
+
+SELECT m.member_id,
+       m.name,
+       COUNT(o.order_id)     AS order_count,
+       SUM(o.total_amount)   AS total_spent
+FROM member m
+INNER JOIN orders o ON o.member_id = m.member_id
+WHERE o.status <> 'CANCELLED'
+GROUP BY m.member_id, m.name
+HAVING SUM(o.total_amount) >= 200000
+ORDER BY total_spent DESC;
+
+-- 실행 결과 --------------------------------
+ member_id |  name  | order_count | total_spent 
+-----------+--------+-------------+-------------
+         2 | 이지영 |           2 |     1408000
+         1 | 김민수 |           3 |      487400
+         3 | 박준호 |           2 |      408000
+         9 | 임도현 |           1 |      216000
+(4 rows)

@@ -1,0 +1,28 @@
+-- [Q18] 인덱스 | 회원별 주문 조회가 잦은 orders.member_id 에 인덱스를 만들고 실행 계획에서 사용되는지 확인한다 (CREATE INDEX)
+
+-- 적용 이유: orders.member_id 는 "내 주문 내역" 조회와 member JOIN 에 매번 쓰이는 FK 컬럼이라,
+--            인덱스가 없으면 주문 전체를 훑어야(Full Scan) 하므로 인덱스로 해당 회원 행만 바로 찾게 한다.
+-- [PostgreSQL 전용] DROP INDEX IF EXISTS (재실행용) / SET enable_seqscan / EXPLAIN 은 PostgreSQL 문법.
+--   행이 수십 개뿐이면 옵티마이저가 순차 스캔을 고르므로, 실습에서는 enable_seqscan 을 잠시 끄고 인덱스 사용을 확인한다.
+DROP INDEX IF EXISTS idx_orders_member_id;
+CREATE INDEX idx_orders_member_id ON orders (member_id);
+
+SET enable_seqscan = off;
+EXPLAIN
+SELECT order_id, status, total_amount
+FROM orders
+WHERE member_id = 1;
+RESET enable_seqscan;
+
+-- 실행 결과 --------------------------------
+NOTICE:  index "idx_orders_member_id" does not exist, skipping
+DROP INDEX
+CREATE INDEX
+SET
+                                     QUERY PLAN                                     
+------------------------------------------------------------------------------------
+ Index Scan using idx_orders_member_id on orders  (cost=0.14..8.15 rows=1 width=66)
+   Index Cond: (member_id = 1)
+(2 rows)
+
+RESET

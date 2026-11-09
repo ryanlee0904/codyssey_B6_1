@@ -1,0 +1,25 @@
+-- [Q14] 서브쿼리 | 평균 평점 4.5 이상인 '인기 상품'을 한 번이라도 산 회원을 찾는다 (IN 서브쿼리 중첩)
+
+SELECT DISTINCT m.member_id, m.name, m.grade
+FROM member m
+INNER JOIN orders o      ON o.member_id = m.member_id
+INNER JOIN order_item oi ON oi.order_id = o.order_id
+WHERE oi.product_id IN (
+        SELECT r.product_id
+        FROM review r
+        GROUP BY r.product_id
+        HAVING AVG(r.rating) >= 4.5
+      )
+ORDER BY m.member_id;
+
+-- 실행 결과 --------------------------------
+ member_id |  name  | grade  
+-----------+--------+--------
+         1 | 김민수 | GOLD
+         2 | 이지영 | VIP
+         3 | 박준호 | SILVER
+         4 | 최소라 | SILVER
+         7 | 윤서준 | BRONZE
+         9 | 임도현 | BRONZE
+        10 | 송미나 | BRONZE
+(7 rows)

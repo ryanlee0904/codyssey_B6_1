@@ -1,0 +1,50 @@
+-- [Q16] 수정 | 결제 완료(PAID)된 주문의 수량만큼 상품 재고를 차감한다 (UPDATE + 상관 서브쿼리)
+
+SELECT product_id, name, stock AS stock_before
+FROM product
+WHERE product_id IN (SELECT oi.product_id
+                     FROM order_item oi
+                     INNER JOIN orders o ON o.order_id = oi.order_id
+                     WHERE o.status = 'PAID')
+ORDER BY product_id;
+
+UPDATE product
+SET stock = stock - (
+        SELECT SUM(oi.quantity)
+        FROM order_item oi
+        INNER JOIN orders o ON o.order_id = oi.order_id
+        WHERE o.status = 'PAID'
+          AND oi.product_id = product.product_id
+    )
+WHERE product_id IN (
+        SELECT oi.product_id
+        FROM order_item oi
+        INNER JOIN orders o ON o.order_id = oi.order_id
+        WHERE o.status = 'PAID'
+    );
+
+SELECT product_id, name, stock AS stock_after
+FROM product
+WHERE product_id IN (SELECT oi.product_id
+                     FROM order_item oi
+                     INNER JOIN orders o ON o.order_id = oi.order_id
+                     WHERE o.status = 'PAID')
+ORDER BY product_id;
+
+-- 실행 결과 --------------------------------
+ product_id |       name       | stock_before 
+------------+------------------+--------------
+         11 | 유기농 견과 믹스 |          300
+         12 | 콜드브루 원액    |          180
+         15 | 대용량 텀블러    |          100
+         19 | 원목 책상        |           10
+(4 rows)
+
+UPDATE 4
+ product_id |       name       | stock_after 
+------------+------------------+-------------
+         11 | 유기농 견과 믹스 |         298
+         12 | 콜드브루 원액    |         176
+         15 | 대용량 텀블러    |          98
+         19 | 원목 책상        |           9
+(4 rows)

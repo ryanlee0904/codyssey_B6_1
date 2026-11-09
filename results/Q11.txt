@@ -1,0 +1,19 @@
+-- [Q11] 집계 | 월별 주문 건수와 매출(취소 제외), 주문당 평균 금액을 구한다 (COUNT + SUM + AVG + GROUP BY)
+
+SELECT EXTRACT(YEAR  FROM ordered_at)  AS order_year,
+       EXTRACT(MONTH FROM ordered_at)  AS order_month,
+       COUNT(*)                        AS order_count,
+       SUM(total_amount)               AS revenue,
+       ROUND(AVG(total_amount), 0)     AS avg_order_amount
+FROM orders
+WHERE status <> 'CANCELLED'
+GROUP BY EXTRACT(YEAR FROM ordered_at), EXTRACT(MONTH FROM ordered_at)
+ORDER BY order_year, order_month;
+
+-- 실행 결과 --------------------------------
+ order_year | order_month | order_count | revenue | avg_order_amount 
+------------+-------------+-------------+---------+------------------
+       2026 |           9 |           4 | 1755000 |           438750
+       2026 |          10 |           5 |  649500 |           129900
+       2026 |          11 |           4 |  724400 |           181100
+(3 rows)

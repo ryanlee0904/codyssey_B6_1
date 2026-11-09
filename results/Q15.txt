@@ -1,0 +1,18 @@
+-- [Q15] 수정 | 배송 중(SHIPPING)인 주문을 배송 완료(DELIVERED)로 바꾸고 결과를 확인한다 (UPDATE)
+
+UPDATE orders
+SET status = 'DELIVERED'
+WHERE status = 'SHIPPING';
+
+SELECT order_id, member_id, status, ordered_at
+FROM orders
+WHERE order_id IN (8, 10)
+ORDER BY order_id;
+
+-- 실행 결과 --------------------------------
+UPDATE 2
+ order_id | member_id |  status   |     ordered_at      
+----------+-----------+-----------+---------------------
+        8 |         2 | DELIVERED | 2026-10-19 08:30:00
+       10 |         8 | DELIVERED | 2026-10-27 21:05:00
+(2 rows)
